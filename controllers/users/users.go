@@ -1,7 +1,7 @@
 package users
 
 import (
-	users "image/models"
+	"image/models/users"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -13,6 +13,10 @@ func Create(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&m); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(err)
+	}
+
+	if m.Email == "" || m.Name == "" || m.Password == "" {
+		return c.Status(fiber.StatusBadRequest).JSON("Invalid creadentials")
 	}
 
 	if err := m.Create(); err != nil {
